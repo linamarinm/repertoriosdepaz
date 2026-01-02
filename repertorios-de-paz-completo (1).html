@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repertorios de Paz - Exposición Virtual Itinerante</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+            background: #000;
+            color: #fff;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* SECCIONES DE PANTALLA COMPLETA */
+        .parallax-section {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* IMAGEN DE FONDO CON PARALLAX */
+        .parallax-bg {
+            position: absolute;
+            top: -10%;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background-size: cover;
+            background-position: center;
+            will-change: transform;
+        }
+        
+        /* OVERLAY OSCURO */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7));
+            z-index: 1;
+        }
+        
+        /* CONTENIDO */
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 60px 40px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+        }
+        
+        .content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .content .number {
+            font-size: 0.9em;
+            letter-spacing: 4px;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+        
+        .content h1 {
+            font-size: 4.5em;
+            margin-bottom: 25px;
+            font-weight: 300;
+            letter-spacing: 6px;
+            text-shadow: 3px 3px 20px rgba(0,0,0,0.9);
+            line-height: 1.2;
+        }
+        
+        .content h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 15px rgba(0,0,0,0.9);
+            line-height: 1.3;
+        }
+        
+        .content .subtitle {
+            font-size: 1.6em;
+            font-style: italic;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
+        }
+        
+        .content .location {
+            font-size: 1.2em;
+            letter-spacing: 3px;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+        
+        .content .quote {
+            font-size: 1.4em;
+            line-height: 1.9;
+            text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
+            margin: 30px 0;
+            font-style: italic;
+            padding: 0 20px;
+        }
+        
+        .content .author {
+            font-size: 1.1em;
+            margin-top: 25px;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+        
+        /* INTRO */
+        .intro {
+            background: linear-gradient(135deg, #2d1810 0%, #5a4a42 100%);
+        }
+        
+        .intro .content h1 {
+            font-size: 5.5em;
+            color: #d4a5a5;
+        }
+        
+        /* TRANSICIONES TEXTUALES */
+        .transition {
+            min-height: 60vh;
+            background: #1a1410;
+        }
+        
+        .transition .content {
+            max-width: 800px;
+        }
+        
+        .transition .quote {
+            font-size: 2em;
+        }
+        
+        /* OBRA 1 - Karen (Bullerengue) */
+        .obra-1 .parallax-bg {
+            background-image: url('01_2.jpg');
+            background-color: #d4a5a5;
+        }
+        
+        /* OBRA 2 - Dulfary (Sindicato) */
+        .obra-2 .parallax-bg {
+            background-image: url('02_3.jpg');
+            background-color: #c4958f;
+        }
+        
+        /* OBRA 3 - Kelly (Emberá) */
+        .obra-3 .parallax-bg {
+            background-image: url('04_2.jpg');
+            background-color: #b88b85;
+        }
+        
+        /* OBRA 4 - Estefanía (Teatro) */
+        .obra-4 .parallax-bg {
+            background-image: url('05_2.jpg');
+            background-color: #a67b75;
+        }
+        
+        /* OBRA 5 - Luz Emilsen (Sonsón) */
+        .obra-5 .parallax-bg {
+            background-image: url('06.jpg');
+            background-color: #9c6b6b;
+        }
+        
+        /* OBRA 6 - María Aidee (Chigorodó) */
+        .obra-6 .parallax-bg {
+            background-image: url('07_2.jpg');
+            background-color: #8a5f5f;
+        }
+        
+        /* OBRA 7 - Gloria (Corotos) */
+        .obra-7 .parallax-bg {
+            background-image: url('08.jpg');
+            background-color: #7d5555;
+        }
+        
+        /* OBRA 8 - Luz Dary (Tejido) */
+        .obra-8 .parallax-bg {
+            background-image: url('09.jpg');
+            background-color: #9c6b6b;
+        }
+        
+        /* OBRA 9 - Tomasa (Cuerpo) */
+        .obra-9 .parallax-bg {
+            background-image: url('10.jpg');
+            background-color: #b88b85;
+        }
+        
+        /* OBRA 10 - María Alejandra (Agua) */
+        .obra-10 .parallax-bg {
+            background-image: url('07_3.jpg');
+            background-color: #d4a5a5;
+        }
+        
+        /* CIERRE */
+        .outro {
+            background: linear-gradient(135deg, #5a4a42 0%, #2d1810 100%);
+            min-height: 100vh;
+        }
+        
+        /* BARRA DE PROGRESO */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #d4a5a5, #9c6b6b);
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+        
+        /* INDICADOR DE SCROLL */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            animation: bounce 2s infinite;
+            opacity: 0.6;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+        
+        .scroll-indicator svg {
+            width: 30px;
+            height: 50px;
+            stroke: #d4a5a5;
+            fill: none;
+            stroke-width: 2;
+        }
+        
+        /* CONTEXTO FLOTANTE */
+        .floating-context {
+            position: absolute;
+            bottom: 8%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            color: #2d1810;
+            padding: 25px 35px;
+            max-width: 550px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            z-index: 3;
+            opacity: 0;
+            transform: translateX(-50%) translateY(30px);
+            transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
+        }
+        
+        .floating-context.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .floating-context .territory {
+            color: #9c6b6b;
+            font-size: 0.9em;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        
+        .floating-context p {
+            color: #5a4a42;
+            font-size: 0.95em;
+            line-height: 1.6;
+            text-shadow: none;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .content h1 {
+                font-size: 3em;
+            }
+            .content h2 {
+                font-size: 2em;
+            }
+            .content .quote {
+                font-size: 1.2em;
+            }
+            .floating-context {
+                max-width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- BARRA DE PROGRESO -->
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <!-- INDICADOR DE SCROLL -->
+    <div class="scroll-indicator" id="scrollIndicator">
+        <svg viewBox="0 0 30 50">
+            <rect x="5" y="5" width="20" height="35" rx="10" ry="10"/>
+            <circle cx="15" cy="15" r="3">
+                <animate attributeName="cy" from="15" to="30" dur="1.5s" repeatCount="indefinite"/>
+            </circle>
+        </svg>
+    </div>
+    
+    <!-- INTRO -->
+    <section class="parallax-section intro">
+        <div class="content visible">
+            <h1>REPERTORIOS<br>DE PAZ</h1>
+            <p class="subtitle">Prácticas de cuidado del cuerpo territorio</p>
+            <p class="location">URABÁ Y ORIENTE ANTIOQUEÑO</p>
+        </div>
+    </section>
+    
+    <!-- OBRA 1: KAREN - BULLERENGUE -->
+    <section class="parallax-section obra-1">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="overlay"></div>
+        <div class="content">
+            <p class="number">01</p>
+            <h2>Camino-andar:<br>repertorios de paz desde el bullerengue</h2>
+            <p class="quote">"El primer territorio es nuestro cuerpo.<br>La filosofía es 'cuidamos lo que somos'."</p>
+            <p class="author">Karen Dayana Palencia Julio (Luna) • Chigorodó, Urabá</p>
+        </div>
+        <div class="floating-context">
+            <p class="territory">BULLERENGUE COMO RESISTENCIA</p>
+            <p>El bullerengue posibilita abrazar todas las emociones. Es una apuesta política de resistencia, permanencia y continuidad de largo plazo.</p>
+        </div>
+    </section>
+    
+    <!-- TRANSICIÓN 1 -->
+    <section class="parallax-section transition">
+        <div class="content">
+            <p class="quote">"Si las mujeres nos ponemos de acuerdo,<br>sabríamos que la paz la tenemos nosotras."</p>
+        </div>
+    </section>
+    
+    <!-- OBRA 2: DULFARY - SINDICATO -->
+    <section class="parallax-section obra-2">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="overlay"></div>
+        <div class="content">
+            <p class="number">02</p>
+            <h2>Pensar la paz desde<br>el barrio y el sindicato</h2>
+            <p class="quote">"La paz empieza desde mi interior,<br>mi forma de pensar, de actuar."</p>
+            <p class="author">Dulfary Córdoba Valencia • Apartadó, Urabá</p>
+        </div>
+        <div class="floating-context">
+            <p class="territory">LIDERAZGO SOCIAL Y SINDICAL</p>
+            <p>Defensa de los derechos laborales de las mujeres bananeras. La paz debe empezar desde el interior de cada persona para proyectarse a lo colectivo.</p>
+        </div>
+    </section>
+    
+    <!-- TRANSICIÓN 2 -->
+    <section class="parallax-section transition">
+        <div class="content">
+            <p class="quote">"A lo que nosotros llamamos desarrollo es vivir nuestra cultura,<br>tener más árboles, más alimentos."</p>
+        </div>
+    </section>
+    
+    <!-- OBRA 3: KELLY - EMBERÁ -->
+    <section class="parallax-section obra-3">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="overlay"></div>
+        <div class="content">
+            <p class="number">03</p>
+            <h2>A los pies de la montaña:<br>memorias que siembran futuro</h2>
+            <p class="quote">"Somos pueblo originario Emberá Eyabida,<br>que en español quiere decir 'tribu de montaña'."</p>
+            <p class="author">Kelly Suescun • Mutatá, Urabá</p>
+        </div>
+        <div class="floating-context">
+            <p class="territory">BUEN VIVIR Y SOBERANÍA ALIMENTARIA</p>
+            <p>La paz es trabajar conscientemente en uno y en el territorio, brindar lo mejor de uno para vivir en paz, en comunidad.</p>
+        </div>
+    </section>
+    
+    <!-- TRANSICIÓN 3 -->
+    <section class="parallax-section transition">
+        <div class="content">
+            <p class="quote">"El teatro es el arte de escuchar,<br>pero la paz también es el arte de escuchar."</p>
+        </div>
+    </section>
+    
+    <!-- OBRA 4: ESTEFANÍA - TEATRO -->
+    <section class="parallax-section obra-4">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="overlay"></div>
+        <div class="content">
+            <p class="number">04</p>
+            <h2>Corpórea como orilla:<br>el teatro y la paz son el arte de escuchar</h2>
+            <p class="quote">"La paz se construye a través del disentimiento.<br>Hay que incomodar, porque la paz nace de la incomodidad."</p>
+            <p class="author">Estefanía Muñoz Giraldo • El Carmen de Viboral, Oriente</p>
+        </div>
+        <div class="floating-context">
+            <p class="territory">PERFORMANCE Y CUERPO-TERRITORIO</p>
+            <p>Narrar las preguntas y violencias de los cuerpos femeninos y feminizados. La paz se construye reconociéndonos.</p>
+        </div>
+    </section>
+    
+    <!-- TRANSICIÓN 4 -->
+    <section class="parallax-section transition">
+        <div class="content">
+            <p class="quote">"Sembrar cura y juntarse para sembrar cura."</p>
+        </div>
+    </section>
+    
+    <!-- OBRA 5: LUZ EMILSEN - SONSÓN -->
+    <section class="parallax-section obra-5">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="overlay"></div>
+        <div class="content">
+            <p class="number">05</p>
+            <h2>Saberes, sabores y sentires:<br>autonomía económica y cuidado de la vida</h2>
+            <p class="quote">"Institucionalizamos el trueque, que llamamos<br>'intercambio de saberes, sabores y sentires'."</p>
+            <p class="author">Luz Emilsen Bedoya Botero • Sonsón, Oriente</p>
+        </div>
+        <div class="floating-context">
+            <p class="territory">ECO-HUERTA TERAPÉUTICA</p>
+            <p>La paz es el equilibrio: el equilibrio consigo misma y también con la naturaleza. La eco-huerta genera conexión y tranquilidad.</p>
+        </div>
+    </section>
+    
+    <!-- TRANSICIÓN 5 -->
+    <section class="parallax-section transition">
+        <div class="content">
+            <p class="quote">"La ritualidad es sintonizar el corazón,<br>el espíritu y la memoria para sanar."</p>
+        </div>
+    </section>
+    
+    <!-- OBRA 6: MARÍA AIDEE - CHIGORODÓ -->
+    <section class="parallax-section obra-6">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="overlay"></div>
+        <div class="content">
+            <p class="number">06</p>
+            <h2>Buscarle la comba al palo:<br>cuidado y reconocimiento de las mujeres</h2>
+            <p class="quote">"Nos interesa el restablecimiento de las relaciones,<br>porque lo que importa es el tejido social."</p>
+            <p class="author">María Aidee Cortés Tabares • Chigorodó, Urabá</p>
+        </div>
+        <div class="floating-context">
+            <p class="territory">JUSTICIA COMUNITARIA</p>
+            <p>La paz es un tema más de las mujeres, porque siempre estamos llamadas a ser las pacificadoras, las que median y dialogan.</p>
+        </div>
+    </section>
+    
+    <!-- TRANSICIÓN 6 -->
+    <section class="parallax-section transition">
+        <div class="content">
+            <p class="quote">"Los corotos tienen vida porque guardan<br>el vínculo emocional de quien se fue."</p>
+        </div>
+    </section>
+    
+    <!-- OBRA 7: GLORIA - COROTOS -->
+    <section class="parallax-section obra-7">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="overlay"></div>
+        <div class="content">
+            <p class="number">07</p>
+            <h2>Corotos con vida:<br>pedagogías de la paz imperfecta</h2>
+            <p class="quote">"La guerra nunca será conveniente.<br>La paz siempre será una salida, aunque sea imperfecta."</p>
+            <p class="author">Gloria Amparo Bohórquez Arias • San Luis, Oriente</p>
+        </div>
+        <div class="floating-context">
+            <p class="territory">MEMORIA HISTÓRICA</p>
+            <p>La entrega de los corotos es un acto de denuncia pública, catarsis y liberación para sentirse liviana. Eso es paz.</p>
+        </div>
+    </section>
+    
+    <!-- TRANSICIÓN 7 -->
+    <section class="parallax-section transition">
+        <div class="content">
+            <p class="quote">"El bordado y el tejido nos han unido.<br>Es una terapia emocional."</p>
+        </div>
+    </section>
+    
+    <!-- OBRA 8: LUZ DARY - TEJIDO -->
+    <section class="parallax-section obra-8">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="overlay"></div>
+        <div class="content">
+            <p class="number">08</p>
+            <h2>No nos venció la guerra:<br>recordar y remendar para sanar el territorio</h2>
+            <p class="quote">"Somos Artesanas de Amor porque moldeamos nuestro ser<br>para transformar y embellecer lo colectivo."</p>
+            <p class="author">Luz Dary Valencia Gómez • La Unión, Oriente</p>
+        </div>
+        <div class="floating-context">
+            <p class="territory">BORDADO COMO MEMORIA</p>
+            <p>Reivindicamos la memoria para que las nuevas generaciones sepan lo que pasó y no se repita lo que vivimos.</p>
+        </div>
+    </section>
+    
+    <!-- TRANSICIÓN 8 -->
+    <section class="parallax-section transition">
+        <div class="content">
+            <p class="quote">"Si me amo, no permito que nadie me lastime.<br>Si me cuido, no voy a lastimar a otros."</p>
+        </div>
+    </section>
+    
+    <!-- OBRA 9: TOMASA - CUERPO -->
+    <section class="parallax-section obra-9">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="overlay"></div>
+        <div class="content">
+            <p class="number">09</p>
+            <h2>El cuerpo como<br>territorio de paz</h2>
+            <p class="quote">"El primer territorio que nos pertenece<br>y que debemos defender es nuestro cuerpo."</p>
+            <p class="author">Tomasa Medrano Ramos • Turbo, Urabá</p>
+        </div>
+        <div class="floating-context">
+            <p class="territory">IDENTIDAD Y AUTOCUIDADO</p>
+            <p>Llevar el cabello crespo y suelto es una posición de poder. No estamos de moda, hemos estado aquí y hemos aportado al territorio.</p>
+        </div>
+    </section>
+    
+    <!-- TRANSICIÓN 9 -->
+    <section class="parallax-section transition">
+        <div class="content">
+            <p class="quote">"Somos agua, somos montaña, somos semilla."</p>
+        </div>
+    </section>
+    
+    <!-- OBRA 10: MARÍA ALEJANDRA - AGUA -->
+    <section class="parallax-section obra-10">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="overlay"></div>
+        <div class="content">
+            <p class="number">10</p>
+            <h2>Corazonarnos:<br>somos agua, somos montaña, somos semilla</h2>
+            <p class="quote">"La crianza mutua parte del cuidado,<br>que ellos nos sigan criando y seguir criando la montaña."</p>
+            <p class="author">María Alejandra Villada Ríos • El Carmen de Viboral, Oriente</p>
+        </div>
+        <div class="floating-context">
+            <p class="territory">DEFENSA TERRITORIAL</p>
+            <p>Pedagogías de la vida que recuerdan que somos naturaleza. Nuestro liderazgo es rotativo y colectivo para protegernos.</p>
+        </div>
+    </section>
+    
+    <!-- CIERRE -->
+    <section class="parallax-section outro">
+        <div class="content visible">
+            <p style="font-size: 1em; margin-bottom: 30px; letter-spacing: 3px; opacity: 0.8;">PROYECTO</p>
+            <h2 style="font-size: 2.5em; margin-bottom: 40px;">Mujeres y repertorios de paz:<br>prácticas de cuidado del cuerpo territorio<br>en el Oriente y Urabá del Departamento de Antioquia</h2>
+            <p style="margin-top: 40px; font-size: 1.1em; line-height: 1.8;">
+                Programa Orquídeas: Mujeres en la Ciencia<br>
+                MinCiencias • Universidad de Antioquia<br>
+                2025
+            </p>
+            <p style="margin-top: 60px; font-size: 0.95em; opacity: 0.7;">
+                Investigadora Principal: Lina Marcela Marín Moreno<br>
+                Joven Investigadora: Kimberly Alejandra Valencia Cardona
+            </p>
+        </div>
+    </section>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const windowHeight = window.innerHeight;
+            
+            // Barra de progreso
+            const totalHeight = document.body.scrollHeight - windowHeight;
+            const progress = (scrolled / totalHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // Ocultar indicador
+            document.getElementById('scrollIndicator').style.opacity = scrolled > 100 ? '0' : '0.6';
+            
+            // Parallax en imágenes
+            document.querySelectorAll('.parallax-bg').forEach(bg => {
+                const section = bg.closest('.parallax-section');
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const speed = parseFloat(bg.dataset.speed) || 0.5;
+                
+                if (scrolled + windowHeight > sectionTop && scrolled < sectionTop + sectionHeight) {
+                    const yPos = (scrolled - sectionTop) * speed;
+                    const progress = (scrolled - sectionTop + windowHeight) / (sectionHeight + windowHeight);
+                    const scale = 1 + (progress * 0.15);
+                    bg.style.transform = `translateY(${yPos}px) scale(${Math.min(scale, 1.15)})`;
+                }
+            });
+            
+            // Mostrar contenido
+            document.querySelectorAll('.content:not(.visible)').forEach(content => {
+                const rect = content.getBoundingClientRect();
+                if (rect.top < windowHeight * 0.7) {
+                    content.classList.add('visible');
+                }
+            });
+            
+            // Mostrar contexto
+            document.querySelectorAll('.floating-context:not(.visible)').forEach(context => {
+                const rect = context.getBoundingClientRect();
+                if (rect.top < windowHeight * 0.75) {
+                    context.classList.add('visible');
+                }
+            });
+        });
+        
+        // Trigger inicial
+        window.dispatchEvent(new Event('scroll'));
+    </script>
+</body>
+</html>
